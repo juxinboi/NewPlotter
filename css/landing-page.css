@@ -176,6 +176,10 @@ p.copyright {
 
 /*edited*/
 
+.uc-header {
+	margin-top: 40px;
+}
+
 .plotter-admin-bg {
 	position: relative;
 	top: 80px;

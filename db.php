@@ -94,4 +94,15 @@
 		return $row;
 	}
 
+	function search_student($studentid)
+	{
+		$db = db_plotter();
+		$sql = "select * from student where studentid = ?";
+		$st = $db->prepare($sql);
+		$st -> execute(array($studentid));
+		$row = $st->fetch();
+		$db = null;
+		
+		return $row;
+	}
 ?>

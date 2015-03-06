@@ -1,35 +1,37 @@
 <?php
-	session_start();	
-	$user = '';
-	$pass = '';
+	session_start();
+	include ("db.php");
 	$error = '';
-	$student = '';	
+	$studentuser = '';	
+	
 	if(isset($_POST['login']))
 	{
-		$user = $_POST['user'];
+		$studentuser = $_POST['studentuser'];
 		$pass = $_POST['pass'];
-			
 		
-			if($user =='admin'  and $pass == 'admin')
+		
+		if($studentuser == 'admin' and $pass == 'admin')
+		{			
+			$_SESSION['islogin'] = $studentuser;
+			header('location: admin.php');
+			exit();
+		} 
+		else 
+		{			
+			$student = search_student($studentuser);		
+		
+			if($student['studentid'] == $studentuser and $pass == 'student')
 			{
-				
-				$_SESSION['islogin'] = true;
-				header('location: admin.php');
+				$_SESSION['islogin'] = $studentuser;
+				header('location: student.php');
 				exit();
 			}
-			if($user =='juxinboi'  and $pass == 'juxinboi')
+			else 
 			{
-				
-				$_SESSION['islogin'] = true;
-				header('location: subject.php');
-				exit();
+				$error = 'Invalid username or passwords!';
 			}
-	
-	
-	}
-		
-			
-	
+		}
+	}	
 ?>		
 <!DOCTYPE html>
 <html lang="en">
@@ -65,26 +67,6 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand topnav" href="#">Online Subject Plotter</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
- 
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
 
     <!-- Header -->
     <div class="intro-header">
@@ -93,41 +75,36 @@
                 <div class="col-lg-12">
                     <div class="intro-message">
                         <h1>Online Subject Plotter </h1>
-                        <h3>University of Cebu</h3>
-                        <header>
-        <div class="container">
-		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
-					<div class="form-group">
-						<form class="form" method="post">
-							<input type="text" class="form-control" name="user" value="<?php echo htmlentities($user); ?>" placeholder="Username"> <br>						
-							<input type="password" class="form-control" name="pass" placeholder="Password">	<br>
-							<?php if($error != ''): ?>
-								<div class="alert alert-danger error" role="alert">
-									<?php echo $error; ?>
+						<div class="uc-header">
+							<h3>University of Cebu</h3>
+							<header>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-offset-4 col-md-4">
+												<div class="form-group">
+													<form class="form" method="post">												
+														<input type="text" class="form-control" name="studentuser" value="<?php echo htmlentities($studentuser); ?>" placeholder="Username"> <br>						
+														<input type="password" class="form-control" name="pass" placeholder="Password">	<br>
+														<?php if($error != ''): ?>
+															<div class="alert alert-danger error" role="alert">
+																<?php echo $error; ?>
+															</div>
+														<?php endif; ?>
+															<button type="submit" class="btn btn-primary btn-lg" name="login"> Login </button>																		
+													</form>
+												</div>
+										</div>
+									</div>
 								</div>
-							<?php endif; ?>
-								<button type="submit" class="btn btn-primary btn-lg" name="login"> Login </button>
-							</div>							
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		</div>
-    </header>
-
+							</header>
+						</div>
                     </div>
                 </div>
             </div>
-
         </div>
         <!-- /.container -->
-
     </div>
-    <!-- /.intro-header -->
-
-  
+    <!-- /.intro-header -->  
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
