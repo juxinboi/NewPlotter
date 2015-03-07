@@ -99,7 +99,7 @@
                 <div class="col-lg-12">
 					<form class="form" method="post">
 						<div class="plotter-admin-bg">
-							<h3>2ND SEMESTER 2014 - 2015</h3>
+							<h3>2ND SEMESTER 2014 - 2015</h3><br>
 							<label id="admin-lbl"> 
 								<?php echo date("Y/m/d");?> 
 							</label>

@@ -124,15 +124,6 @@
 					<div class="plotter-admin-bg">
 							<h3>2ND SEMESTER 2014 - 2015</h3>
 						<div class="container-fluid">
-						<div class="table">
-							<table class="table table-condensed">
-								<tr>
-									<th>Id Number</th>
-									<th>Student Name</th>
-									<th>Course-Year</th>
-								</tr>
-							</table>
-						</div>
 							<div class="row">
 								<div class="col-xs-2">
 									<?php echo htmlentities($student['studentid']); ?>
@@ -140,7 +131,7 @@
 								<div class="col-xs-8">
 									<?php echo htmlentities($student['lname']) . " , "; ?>
 									<?php echo htmlentities($student['fname']); ?>
-									<?php echo htmlentities($student['mname']) . "."; ?>
+									<?php echo htmlentities($student['mname']) ; ?>
 									
 								</div>
 								<div class="col-xs-2">
@@ -149,6 +140,7 @@
 								</div>
 							</div>
 						</div>
+						<br>
 						<div class="table">
 							<table class="table table-condensed">
 								<tr>
