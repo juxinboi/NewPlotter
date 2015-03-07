@@ -80,6 +80,18 @@
 		
 		return $row;
 	}
+	
+	function find_duplicate($edpcode)
+	{
+		$db = db_plotter();
+		$sql = "select * from subject where edpcode=?";
+		$st = $db->prepare($sql);
+		$st->execute(array($edpcode));
+		$row = $st->fetch();
+		$db = null;
+		
+		return $row;
+	}
 
 	
 	function find_student($user)
