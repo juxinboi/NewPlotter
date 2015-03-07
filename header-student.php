@@ -20,13 +20,10 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="admin.php"><i class="glyphicon glyphicon-plus"> </i> Add</a>
+                        <a href="student.php"><i class="glyphicon glyphicon-plus"> </i> New Plotter</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="admin-view.php"><i class="glyphicon glyphicon-th-list"> </i> View</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="admin-search.php"><i class="glyphicon glyphicon-search"> </i> Search</a>
+                        <a href=""><i class="glyphicon glyphicon-th-list"> </i> View Plotters</a>
                     </li>
 					<li class="page-scroll">
                         <a href="logout.php"><i class="glyphicon glyphicon-off"> </i> Logout</a>

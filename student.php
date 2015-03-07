@@ -113,28 +113,39 @@
     <!-- Header -->
 <div class="intro-header">
 <body id="page-top" class="index">
-	<?php include('header.php'); ?>
+	<?php include('header-student.php'); ?>
 	
     <!-- Header -->
     <header>
 		<div class="container">
 			<div class="row">		
 				<div class="col-md-6">
-					<div class="plot-left">
+					<form class="form" method="post">
+					<div class="plotter-admin-bg">
 							<h3>2ND SEMESTER 2014 - 2015</h3>
 						<div class="container-fluid">
+						<div class="table">
+							<table class="table table-condensed">
+								<tr>
+									<th>Id Number</th>
+									<th>Student Name</th>
+									<th>Course-Year</th>
+								</tr>
+							</table>
+						</div>
 							<div class="row">
 								<div class="col-xs-2">
 									<?php echo htmlentities($student['studentid']); ?>
 								</div>
 								<div class="col-xs-8">
-									<?php echo htmlentities($student['studentfname']); ?>
-									<?php echo htmlentities($student['studentmi']) . "."; ?>
-									<?php echo htmlentities($student['studentlname']); ?>
+									<?php echo htmlentities($student['lname']) . " , "; ?>
+									<?php echo htmlentities($student['fname']); ?>
+									<?php echo htmlentities($student['mname']) . "."; ?>
+									
 								</div>
 								<div class="col-xs-2">
-									<?php echo htmlentities($student['studentcourse']); ?>
-									<?php echo htmlentities($student['studentyear']); ?>
+									<?php echo htmlentities($student['course']); ?>
+									<?php echo htmlentities($student['year']); ?>
 								</div>
 							</div>
 						</div>
@@ -165,15 +176,15 @@
 						</div>
 						<div>
 							<center>
-								<input type="submit" name="add" value="Submit" class="btn btn-default btn-lg">
-								<input type="reset" name="submit" value="Cancel" class="btn btn-default btn-lg">
+								<input type="submit" name="add" value="Submit" class="btn btn-primary btn-lg">&nbsp&nbsp
+								<input type="reset" name="submit" value="Cancel" class="btn btn-warning btn-lg">
 							</center>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6">			
 					<?php if(count($plotter) > 0): ?>
-					<div class="plot-left">
+					<div class="plotter-admin-bg">
 						<div class="table-responsive table subject-table">							
 							<h2> Subject Lists </h2>
 							<table class="table table-striped table-condensed table-hover">
@@ -216,6 +227,7 @@
 						</div>
 					<?php endif; ?>
 				</div>	
+			  </form>
 			</div>
 		</div>
     </header>
