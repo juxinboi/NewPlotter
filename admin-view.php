@@ -1,19 +1,12 @@
 <?php	
 	session_start();
 	include('db.php');
-		
 	$page_id = 'view';
-	$edpcode = '';	
-	$subject = '';	
-	$stime = '';	
-	$etime = '';	
-	$days = '';		
-	$room = '';
-	$units = '';
-	$prereq = '';
-	$message = '';
-	$error = '';
-	
+	$plotter = '';	
+	$plotterid = '';
+	$status_p = 0;
+	$status_a = 1;	
+	$status_c = 2;			
 	if(!isset($_SESSION['islogin']))
 	{
 		//go back to login page
@@ -21,48 +14,22 @@
 		exit();
 	}
 	else 
-	{
-		if(isset($_POST['add']))
+	{			
+		if(isset($_GET['id']))
 		{
-				$edpcode = trim($_POST['edpcode']);
-				$subject = trim($_POST['subject']);	
-				$stime = trim($_POST['stime']);	
-				$etime = trim($_POST['etime']);	
-				$days = trim($_POST['days']);		
-				$room = trim($_POST['room']);
-				$units = trim($_POST['units']);
-				
-				if($stime == $etime)
-				{
-					$error = 1;
-					$message = 'Start time should be greater than 1 hour';
-				}
-				elseif($stime > $etime)
-				{
-					$error = 1;
-					$message = 'Invalid time';
-				}
-				elseif($units > 10 || $units < 1) 
-				{
-					$error = 1;
-					$message = 'Invalid unit';
-				}
-				else 
-				{
-					add_subject($edpcode, $subject, $stime, $etime, $days, $room, $units, $prereq);
-					$message = 'Successfully Added';				
-					$edpcode = '';	
-					$subject = '';	
-					$stime = '';	
-					$etime = '';	
-					$days = '';		
-					$room = '';
-					$units = '';
-					$prereq = '';
-				}
-		}				
+			$plotterid = $_GET['id'];
+			update_student_plotted_subject($status_a, $plotterid);
+		}
 		
-		$plotter = list_subject();
+		if(isset($_GET['pid']))
+		{
+			$plotterid = $_GET['pid'];	
+			delete_student_plotter_subject($status_c, $plotterid);
+		}
+		
+		$plotter_pending = pending_student_plotter_subject($status_p);
+		$plotter_approved = approved_student_plotter_subject($status_a);
+		//$plotter = list_student_plotter();
 	}
 ?>
 <!DOCTYPE html>
@@ -87,84 +54,50 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand topnav" href="#">Online Subject Plotter</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
- 
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-
-    <!-- Header -->
-<div class="intro-header">
+<!-- Header -->
 <body id="page-top" class="index">
-	<?php include('header.php'); ?>
+	<?php //include('header.php'); ?>
 	
     <!-- Header -->
     <header>
         <div class="container">
 			   <div class="plotter-admin-bg">
-				<h3> Subject Lists</h3>
-				<?php if(count($plotter) > 0): ?>
+				<h3> Pending Plotter</h3>
+				<?php if(count($plotter_pending) > 0): ?>
 					<div class="table-responsive table subject-table">
 						<table class="table table-striped table-condensed table-hover">
 							<thead>
 								<tr>
-									<th width="150">EDP Code</th>
-									<th>Subject</th>
-									<th>Start Time</th>
-									<th>End Time</th>
-									<th>Days</th>
-									<th>Room</th>
-									<th>Units</th>
-									<th width="50"> </th>
-									<th width="50"> </th>
+									<th width="150">Plotter ID</th>
+									<th>Date Submitted</th>
+									<th>Year</th>
+									<th>Plotter Semester</th>
+									<th>Student ID</th>
+									<th width="50"> Status </th>
 								</tr>
 							</thead>
 							<tbody>
-							<?php foreach($plotter as $n): ?>
+							<?php foreach($plotter_pending as $n): ?>
 								<tr>
-									<td><?php echo htmlentities($n['edpcode']); ?></td>
-									<td><?php echo htmlentities($n['subject']); ?></td>
-									<td><?php echo htmlentities($n['stime']); ?></td>
-									<td><?php echo htmlentities($n['etime']); ?></td>
-									<td><?php echo htmlentities($n['days']); ?></td>
-									<td><?php echo htmlentities($n['room']); ?></td>
-									<td><?php echo htmlentities($n['units']); ?></td>
+									<td><?php echo htmlentities($n['plotterid']); ?></td>
+									<td><?php echo htmlentities($n['plotterdate']); ?></td>
+									<td><?php echo htmlentities($n['plottersy']); ?></td>
+									<td><?php echo htmlentities($n['plottersem']); ?></td>
+									<td><?php echo htmlentities($n['studentid']); ?></td>									
 									<td>
-										<a href="admin-edit.php?id=<?php echo htmlentities($n['subjNo']); ?>">
-											<i class="glyphicon glyphicon-pencil"> </i>
-										</a>
-									</td>
+										<center>
+												<a href="admin-view.php?id=<?php echo htmlentities($n['plotterid']); ?>">										    	
+													<button type="submit" class="btn btn-warning btn-xs" name="login" onclick="return confirm('Are you sure?');">Pending </button>													
+												</a>
+										</center>
 									<td>
-										<a href="subject-delete.php?id=<?php echo htmlentities($n['subjNo']); ?>"  onclick="return confirm('Are you sure?');">
-											<i class="glyphicon glyphicon-trash"> </i>
-										</a>
+										<center>
+												<a href="admin-view.php?pid=<?php echo htmlentities($n['plotterid']);  ?>">	
+													<i class="glyphicon glyphicon-remove" onclick="return confirm('Are you sure?');"> </i> 
+												</a>
+										</center>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -176,9 +109,56 @@
 						<?php echo "No entries recorded yet!"; ?>
 					</div>
 				<?php endif; ?>
-			</div>		
-				</div>
-			</div>
+			</div>	
+			<div class="plotter-admin-bg">
+				<h3> Approved Plotters </h3>
+				<?php if(count($plotter) > 0): ?>
+					<div class="table-responsive table subject-table">
+						<table class="table table-striped table-condensed table-hover">
+							<thead>
+								<tr>
+									<th width="150">Plotter ID</th>
+									<th>Date Submitted</th>
+									<th>Year</th>
+									<th>Plotter Semester</th>
+									<th>Student ID</th>
+									<th width="50"> Status </th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach($plotter_approved as $n): ?>
+								<tr>
+									<td><?php echo htmlentities($n['plotterid']); ?></td>
+									<td><?php echo htmlentities($n['plotterdate']); ?></td>
+									<td><?php echo htmlentities($n['plottersy']); ?></td>
+									<td><?php echo htmlentities($n['plottersem']); ?></td>
+									<td><?php echo htmlentities($n['studentid']); ?></td>									
+									<td>
+										<center>
+										<?php if($n['status'] == 0): ?>
+										    <a href="admin-view.php?id=<?php echo htmlentities($n['plotterid']); ?>">										    	
+												<button type="submit" class="btn btn-warning btn-xs" name="login">Pending </button>
+												<i class="glyphicon glyphicon-remove"> </i> 
+										    </a>
+										<?php else: ?>
+											<a href="admin-view.php?id=<?php echo htmlentities($n['plotterid']); ?>"  onclick="return confirm('Are you sure?');">
+												<button type="submit" class="btn btn-primary btn-xs" name="login">Approved </button>
+												
+										    </a>
+										<?php endif; ?> 
+										</center>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>					
+				<?php else: ?>
+					<div class="alert alert-danger" role="alert">
+						<?php echo "No entries recorded yet!"; ?>
+					</div>
+				<?php endif; ?>
+			</div>				
 		</div>
     </header>
 
