@@ -58,7 +58,7 @@
 
 <!-- Header -->
 <body id="page-top" class="index">
-	<?php //include('header.php'); ?>
+	<?php include('header.php'); ?>
 	
     <!-- Header -->
     <header>
@@ -106,7 +106,7 @@
 					</div>					
 				<?php else: ?>
 					<div class="alert alert-danger" role="alert">
-						<?php echo "No entries recorded yet!"; ?>
+						<?php echo "No pending recordeds!"; ?>
 					</div>
 				<?php endif; ?>
 			</div>	
@@ -155,7 +155,7 @@
 					</div>					
 				<?php else: ?>
 					<div class="alert alert-danger" role="alert">
-						<?php echo "No entries recorded yet!"; ?>
+						<?php echo "No approved recorded!"; ?>
 					</div>
 				<?php endif; ?>
 			</div>				
