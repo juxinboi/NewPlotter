@@ -33,8 +33,14 @@
 			$room = trim($_POST['room']);
 			$units = trim($_POST['units']);
 				
-				
-				if(($etime-$stime)<1)
+			$f_edpcode = find_duplicate($edpcode);
+			
+				if($f_edpcode['edpcode'] == $edpcode)
+				{
+					$error = 1;
+					$message = 'EDP code already exist';
+				}
+				elseif(($etime-$stime)<1)
 				{
 					$error = 1;
 					$message = 'Scheduled time should be greater than 1 hour';

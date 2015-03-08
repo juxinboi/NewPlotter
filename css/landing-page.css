@@ -197,9 +197,8 @@ p.copyright {
 	margin-bottom: 30px;
 }
 
-
 .plotter-admin-bg table {
-	color: #063e5c;
+	color: #063e5c;	
 }
 
 .plotter-admin-bg td {
@@ -236,5 +235,10 @@ p.copyright {
 .search-admin-bg td {
 	text-align: left;
 }
+
+.container-fluid {
+	margin: 10px;
+}
+
 
 

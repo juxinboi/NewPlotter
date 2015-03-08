@@ -7,8 +7,7 @@
 	if(isset($_POST['login']))
 	{
 		$studentuser = $_POST['studentuser'];
-		$pass = $_POST['pass'];
-		
+		$pass = $_POST['pass'];		
 		
 		if($studentuser == 'admin' and $pass == 'admin')
 		{			
