@@ -203,7 +203,7 @@
 						</div>	
 					<?php else: ?>
 							<div class="alert alert-danger error" role="alert">
-								<?php echo 'No records found'; ?>
+								<?php echo 'Click check button to add subjects'; ?>
 							</div>
 					<?php endif; ?>
 						
