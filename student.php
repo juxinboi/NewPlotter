@@ -14,8 +14,10 @@
 	$message = '';
 	$error = '';
 	$s_plotter = '';
-	$ecode=array();
-	
+	$ctr = '';
+	$plotted_subject = '';
+	$duplicate = '';
+		
 	if(!isset($_SESSION['islogin']))
 	{
 		//go back to login page
@@ -35,24 +37,60 @@
 			$studentid = $_SESSION['islogin'];		
 			$student = search_student($studentid);
 			$plotter = list_subject();
+			$ctr = list_student_plotter(); //#of plotter
+			$ctr = count($ctr);		
+		}		
+		
+		if(isset($_GET['edp']))
+		{
+			$edpcode = trim($_GET['edp']);		
+			//$s_plotter = find_edpcode($edpcode);
+			
+			$duplicate = search_student_plotted_subject ($ctr, $edpcode);
+			$plotted_subject = show_student_plotted_subject($ctr);
+			
+			if($duplicate['plotterid'] == $ctr and $duplicate['edpcode'] == $edpcode)
+			{
+				$error = 1;
+				$message = "EDP Code already exist";
+			}
+			elseif (count($plotted_subject) >= 10)
+			{
+				$error = 1;
+				$message = "Subject plotter is full";
+			}
+			else 
+			{
+				add_student_plotted_subject($ctr,$edpcode);	
+				
+				$error = 0;
+				$message = 'Subject Added';				
+			}
+		}			
+		
+		if(isset($_POST['add']))
+		{
+			$plottersy = 2014;
+			$plottersem = '1st';			
+			
+			add_student_plotter($plottersy, $plottersem, $studentid);
+			$plottersy = '';
+			$plottersem = '';
+			$error = 0;
+			$message = '';
+			
+			++$ctr;		
 		}
 		
 		if(isset($_GET['id']))
 		{
-			$subjNo = trim($_GET['id']);		
-			$s_plotter = find_subject($subjNo);
-					
-			if($s_plotter)
-			{
-				echo $s_plotter['edpcode'];
-				echo $s_plotter['subject'];	
-				echo $s_plotter['stime'];	
-				echo $s_plotter['etime'];	
-				echo $s_plotter['days'];		
-				echo $s_plotter['room'];
-				echo $s_plotter['units'];
-			}
+			$id = trim($_GET['id']);	
+			delete_student_plotted_subject($id);
+			$error = 0;
+			$message = 'Subject sucessfully deleted'; 
 		}
+		
+		$plotted_subject = show_student_plotted_subject($ctr);		
 	}
 ?>
 <!DOCTYPE html>
@@ -78,40 +116,8 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand topnav" href="#">Online Subject Plotter</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
- 
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-
-    <!-- Header -->
-<div class="intro-header">
+<!-- Header -->
 <body id="page-top" class="index">
 	<?php include('header.php'); ?>
 	
@@ -120,73 +126,105 @@
 		<div class="container">
 			<div class="row">		
 				<div class="col-md-6">
-					<div class="plot-left">
-							<h3>2ND SEMESTER 2014 - 2015</h3>
+					<div class="plotter-admin-bg">
+						<h3>2ND SEMESTER 2014 - 2015</h3>
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-xs-2">
 									<?php echo htmlentities($student['studentid']); ?>
 								</div>
 								<div class="col-xs-8">
-									<?php echo htmlentities($student['studentfname']); ?>
-									<?php echo htmlentities($student['studentmi']) . "."; ?>
-									<?php echo htmlentities($student['studentlname']); ?>
+									<?php echo htmlentities($student['lname']) . " , "; ?>
+									<?php echo htmlentities($student['fname']); ?>
+									<?php echo htmlentities($student['mname']) ; ?>
 								</div>
 								<div class="col-xs-2">
-									<?php echo htmlentities($student['studentcourse']); ?>
-									<?php echo htmlentities($student['studentyear']); ?>
+									<?php echo htmlentities($student['course']); ?>
+									<?php echo htmlentities($student['year']); ?>
 								</div>
 							</div>
-						</div>
+						</div>									
+						
+					<?php if(count($plotted_subject) > 0): ?>
+						<div class="pull-left">
+							<h4>
+								Plotter ID: <?php echo ++$ctr; ?>
+							</h4>
+						</div>	
 						<div class="table">
 							<table class="table table-condensed">
-								<tr>
-									<th>Subject</th>
-									<th>EDP Code</th>
-									<th>Start Time</th>
-									<th>Days</th>
-									<th>Room</th>
-									<th>Units</th>
-								</tr> 	
-							<tbody>
-								<?php if($s_plotter): ?>
-									<tr>
-										<td><?php echo htmlentities($s_plotter['edpcode']); ?></td>
-										<td><?php echo htmlentities($s_plotter['subject']); ?></td>
-										<td><?php echo htmlentities($s_plotter['stime']); ?></td>
-										<td><?php echo htmlentities($s_plotter['etime']); ?></td>
-										<td><?php echo htmlentities($s_plotter['days']); ?></td>
-										<td><?php echo htmlentities($s_plotter['room']); ?></td>
-										<td><?php echo htmlentities($s_plotter['units']); ?></td>
-									</tr>
-								<?php endif; ?>
-							</tbody>
-							</table>
-						</div>
-						<div>
-							<center>
-								<input type="submit" name="add" value="Submit" class="btn btn-default btn-lg">
-								<input type="reset" name="submit" value="Cancel" class="btn btn-default btn-lg">
-							</center>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">			
-					<?php if(count($plotter) > 0): ?>
-					<div class="plot-left">
-						<div class="table-responsive table subject-table">							
-							<h2> Subject Lists </h2>
-							<table class="table table-striped table-condensed table-hover">
 								<thead>
 									<tr>
-										<th width="150">Subject</th>
 										<th>EDP Code</th>
+										<th>Subject</th>
 										<th>Start Time</th>
 										<th>End Time</th>
 										<th>Days</th>
 										<th>Room</th>
 										<th>Units</th>
-										<th width="50"> </th>
+									</tr> 	
+								</thead>
+								<tbody>				
+									<?php foreach($plotted_subject as $p): ?>
+										<tr>
+											<td><?php echo htmlentities($p['edpcode']); ?></td>
+											<td><?php echo htmlentities($p['subject']); ?></td>
+											<td><?php echo htmlentities($p['stime']); ?></td>
+											<td><?php echo htmlentities($p['etime']); ?></td>
+											<td><?php echo htmlentities($p['days']); ?></td>
+											<td><?php echo htmlentities($p['room']); ?></td>
+											<td><?php echo htmlentities($p['units']); ?></td>											
+											<td>
+												<a href="student.php?id=<?php echo htmlentities($p['edpcode']); ?>"  onclick="return confirm('Are you sure?');">
+													<i class="glyphicon glyphicon-trash"> </i>
+												</a>
+											</td>
+										</tr>
+									<?php endforeach; ?>									
+								</tbody>
+							</table>
+						</div>							
+						<?php if($error == 1): ?>
+							<div class="alert alert-danger error" role="alert">
+								<?php echo $message; ?>
+							</div>
+						<?php elseif($error == 0 and $message != ''): ?>
+							<div class="alert alert-success success" role="alert">
+								<?php echo $message; ?>
+							</div>
+						<?php endif; ?>
+						<div>							
+							<form method="post" class="form">
+								<center>
+									<input type="submit" name="add" value="Submit" class="btn btn-default btn-lg">
+									<input type="reset" name="submit" value="Cancel" class="btn btn-default btn-lg">
+								</center>
+							</form>
+						</div>	
+					<?php else: ?>
+							<div class="alert alert-danger error" role="alert">
+								<?php echo 'No records found'; ?>
+							</div>
+					<?php endif; ?>
+						
+					</div>
+				</div>
+				<div class="col-md-6">			
+					<?php if(count($plotter) > 0): ?>
+					<div class="plotter-admin-bg">
+						<div class="table-responsive table subject-table">							
+							<h2> Subject Lists </h2>
+							<table class="table table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th>EDP Code</th>
+										<th>Subject</th>
+										<th>Start Time</th>
+										<th>End Time</th>
+										<th>Days</th>
+										<th>Room</th>
+										<th>Units</th>
+										<th width="40"> </th>
 									</tr>
 								</thead>
 								<tbody>							
@@ -200,8 +238,8 @@
 										<td><?php echo htmlentities($n['room']); ?></td>
 										<td><?php echo htmlentities($n['units']); ?></td>
 										<td>
-											<a href="student.php?id=<?php echo htmlentities($n['subjNo']); ?>">
-												<i class="glyphicon glyphicon-check"></i>
+											<a href="student.php?edp=<?php echo htmlentities($n['edpcode']); ?>">
+												<center><i class="glyphicon glyphicon-check"></i> </center>
 											</a>
 										</td>
 									</tr>

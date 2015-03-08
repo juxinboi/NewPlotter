@@ -16,7 +16,9 @@
 		
 		return $db;
 	}
-	
+
+/*----------subject table-------------*/
+
 	function add_subject($edpcode, $subject, $stime, $etime, $days, $room, $units, $prereq)
 	{
 		$db = db_plotter();
@@ -69,12 +71,12 @@
 		$db = null;
 	}
 	
-	function find_subject($subjNo)
+	function find_edpcode($edpcode)
 	{
 		$db = db_plotter();
-		$sql = "select * from subject where subjNo=?";
+		$sql = "select * from subject where edpcode=?";
 		$st = $db->prepare($sql);
-		$st->execute(array($subjNo));
+		$st->execute(array($edpcode));
 		$row = $st->fetch();
 		$db = null;
 		
@@ -93,7 +95,8 @@
 		return $row;
 	}
 
-	
+/*----------student table-------------*/	
+
 	function find_student($user)
 	{
 		$db = db_plotter();
@@ -105,7 +108,7 @@
 		
 		return $row;
 	}
-
+		
 	function search_student($studentid)
 	{
 		$db = db_plotter();
@@ -116,5 +119,74 @@
 		$db = null;
 		
 		return $row;
+	}
+	
+/*----------plotter table-------------*/
+
+	function add_student_plotter ($plottersy, $plottersem, $studentid)	
+	{
+		$db = db_plotter();
+		$sql = "insert into plotter(plottersy, plottersem, studentid) values(?,?,?)";
+		$st = $db->prepare($sql);
+		$st -> execute(array($plottersy, $plottersem, $studentid));
+		$db = null;		
+	}
+	
+	function list_student_plotter ()
+	{
+		$db = db_plotter();
+		$sql = "select * from plotter";
+		$st = $db->prepare($sql);
+		$st -> execute();
+		$row = $st->fetchAll();
+		$db = null;
+		
+		
+		return $row;
+	}
+/*----------pltted_subject table-------------*/
+
+	function add_student_plotted_subject ($plotterid,$edpcode)
+	{
+		$db = db_plotter();
+		$sql = "insert into plotted_subject (plotterid, edpcode) values(?,?)";
+		$st = $db->prepare($sql);
+		$st->execute(array($plotterid,$edpcode));
+		$db = null;
+	}
+	
+	function search_student_plotted_subject ($plotterid, $edpcode)
+	{
+		$db = db_plotter();
+		$sql = "select * from plotted_subject where plotterid = ? and edpcode = ?";
+		$st = $db->prepare($sql);
+		$st -> execute(array($plotterid, $edpcode));
+		$row = $st->fetch();
+		$db = null;
+		
+		return $row;
+	}
+	
+	function show_student_plotted_subject ($plotterid)
+	{
+		$db = db_plotter();
+		//$sql = "select edpcode, subject, stime, etime, days, room, units from plotted_subjects, s.subject where plotterid = ? and s.edpcode = ?";
+		//$sql = "select * from plotted_subject where plotterid = ?";
+		$sql = "select s.edpcode, s.subject, s.stime, s.etime, s.days, s.room, s.units from subject s, plotted_subject p where p.plotterid = ? and s.edpcode = p.edpcode ";
+		$st = $db->prepare($sql);
+		$st->execute(array($plotterid));
+		$row = $st->fetchAll();
+		$db = null;
+		
+		return $row;
+	}
+	
+	function delete_student_plotted_subject($edpcode)
+	{
+		$db = db_plotter();
+		$sql = "delete from plotted_subject where edpcode = ?";
+		$st = $db->prepare($sql);
+		$st->execute(array($edpcode));
+		$db = null;
 	}
 ?>
