@@ -31,6 +31,16 @@
 		$plotter_approved = approved_student_plotter_subject($status_a);
 		//$plotter = list_student_plotter();
 	}
+		$studentid = $_SESSION['islogin'];	
+		{
+		
+		$approved = view_student_approved($status_a, $studentid);
+		$pending = view_student_pending($status_p, $studentid);
+		$canceled = view_student_cancel($status_c, $studentid);
+		//print_r($plotter_approved);
+		//$plotter = list_student_plotter();
+		}	
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +56,7 @@
     <title>OSP</title>
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 	
+    <title>Landing Page - Start Bootstrap Theme</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -68,6 +79,8 @@
 			   <div class="plotter-admin-bg">
 				<h3> My Pending Plotters</h3>
 				<?php if(count($plotter_pending) > 0): ?>
+				<h3> Approved Plotter</h3>
+				<?php if(count($approved) > 0): ?>
 					<div class="table-responsive table subject-table">
 						<table class="table table-striped table-condensed table-hover">
 							<thead>
@@ -82,6 +95,7 @@
 							</thead>
 							<tbody>
 							<?php foreach($plotter_pending as $n): ?>
+							<?php foreach($approved as $n): ?>
 								<tr>
 									<td><?php echo htmlentities($n['plotterid']); ?></td>
 									<td><?php echo htmlentities($n['plotterdate']); ?></td>
@@ -101,6 +115,8 @@
 												</a>
 										</center>
 									</td>
+									<td><?php echo htmlentities($n['studentid']); ?></td>																		
+									<td><?php echo htmlentities($n['status']); ?></td>	
 								</tr>
 							<?php endforeach; ?>
 							</tbody>
@@ -112,9 +128,11 @@
 					</div>
 				<?php endif; ?>
 			</div>	
-			<div class="plotter-admin-bg">
+			<div class="plotter-admin-bg"> 
 				<h3> Approved Plotters </h3>
 				<?php if(count($plotter) > 0): ?>
+				<h3> Pending Plotter </h3>
+				<?php if(count($pending) > 0): ?> 
 					<div class="table-responsive table subject-table">
 						<table class="table table-striped table-condensed table-hover">
 							<thead>
@@ -127,13 +145,14 @@
 									<th width="50"> Status </th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody> 
 							<?php foreach($plotter_approved as $n): ?>
+							<?php foreach($pending as $n): ?> 
 								<tr>
 									<td><?php echo htmlentities($n['plotterid']); ?></td>
 									<td><?php echo htmlentities($n['plotterdate']); ?></td>
 									<td><?php echo htmlentities($n['plottersy']); ?></td>
-									<td><?php echo htmlentities($n['plottersem']); ?></td>
+									<td><?php echo htmlentities($n['plottersem']); ?></td> 
 									<td><?php echo htmlentities($n['studentid']); ?></td>									
 									<td>
 										<center>
@@ -151,6 +170,8 @@
 										</center>
 									</td>
 								</tr>
+									<td><?php echo htmlentities($n['studentid']); ?></td>	
+									<td><?php echo htmlentities($n['status']); ?></td>	 
 							<?php endforeach; ?>
 							</tbody>
 						</table>
@@ -161,6 +182,42 @@
 					</div>
 				<?php endif; ?>
 			</div>				
+			</div>	
+			<div class="plotter-admin-bg">
+					<h3> Canceled Plotter </h3>
+					<?php if(count($canceled) > 0): ?>
+						<div class="table-responsive table subject-table">
+							<table class="table table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th width="150">Plotter ID</th>
+										<th>Date Submitted</th>
+										<th>Year</th>
+										<th>Plotter Semester</th>
+										<th>Student ID</th>
+										<th width="50"> Status </th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach($canceled as $n): ?>
+									<tr>
+										<td><?php echo htmlentities($n['plotterid']); ?></td>
+										<td><?php echo htmlentities($n['plotterdate']); ?></td>
+										<td><?php echo htmlentities($n['plottersy']); ?></td>
+										<td><?php echo htmlentities($n['plottersem']); ?></td>
+										<td><?php echo htmlentities($n['studentid']); ?></td>
+										<td><?php echo htmlentities($n['status']); ?></td>											
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>					
+					<?php else: ?>
+						<div class="alert alert-danger" role="alert">
+							<?php echo "No approved recorded!"; ?>
+						</div>
+					<?php endif; ?>
+			</div>							 
 		</div>
     </header>
 

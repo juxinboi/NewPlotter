@@ -90,7 +90,7 @@
 																<?php echo $error; ?>
 															</div>
 														<?php endif; ?>
-															<button type="submit" class="btn btn-primary btn-lg" name="login"> Login </button>																		
+															<button type="submit" class="btn btn-primary btn-lg" name="login"> Login </button>																
 													</form>
 												</div>
 										</div>
