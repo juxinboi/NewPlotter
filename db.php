@@ -71,12 +71,12 @@
 		$db = null;
 	}
 	
-	function find_edpcode($edpcode)
+	function find_edpcode($subjNo)
 	{
 		$db = db_plotter();
-		$sql = "select * from subject where edpcode=?";
+		$sql = "select * from subject where subjNo=?";
 		$st = $db->prepare($sql);
-		$st->execute(array($edpcode));
+		$st->execute(array($subjNo));
 		$row = $st->fetch();
 		$db = null;
 		

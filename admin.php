@@ -13,7 +13,7 @@
 	$prereq = '';
 	$message = '';
 	$error = '';
-	$ecode=array();
+	$search = '';
 	
 	if(!isset($_SESSION['islogin']))
 	{
@@ -70,9 +70,23 @@
 				}
 		}				
 		
-		$plotter = list_subject();
+		if(isset($_GET['search']))
+		{
+			$search = trim($_GET['search']);
+		}
+		
+		if($search == '')
+		{
+			$plotter = list_subject();
+		}
+		else 
+		{
+			$plotter = search_subject($search);
+		}
 	}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -124,8 +138,8 @@
 										<tr>
 											<td><input type="text" class="form-control" name="edpcode" pattern=".{5,5}" value="<?php echo htmlentities($edpcode); ?>" placeholder="EDP Code" maxlength="5" required /></td>
 											<td><input type="text" class="form-control" name="subject" pattern=".{3,15}" value="<?php echo htmlentities($subject); ?>" placeholder="Subject" maxlength="15" required /></td>							
-											<td><input type="time" class="form-control" name="stime" value="<?php echo htmlentities ($stime); ?>" placeholder="Start Time" maxlength="7" required/></td>
-											<td><input type="time" class="form-control" name="etime" value="<?php echo htmlentities($etime); ?>" placeholder="End Time" maxlength="7" required/></td>
+											<td><input type="time" class="form-control" name="stime" value="<?php echo htmlentities ($stime); ?>" placeholder="Start Time" maxlength="7" required /></td>
+											<td><input type="time" class="form-control" name="etime" value="<?php echo htmlentities($etime); ?>" placeholder="End Time" maxlength="7" required /></td>
 											<!--<td><input type="text" class="form-control" name="days" value="<?php echo htmlentities($days); ?>" placeholder="Days" maxlength="5" required/></td>-->
 											<td>
 												<select name="days" class="form-control">
@@ -137,7 +151,7 @@
 													<option value="TTH"> S </option>
 												</select>
 											</td>
-											<td><input type="text" class="form-control" name="room" pattern=".{3,4}" value="<?php echo htmlentities($room); ?>" placeholder="Room" maxlength="4"  required/></td>
+											<td><input type="text" class="form-control" name="room" pattern=".{3,4}" value="<?php echo htmlentities($room); ?>" placeholder="Room" maxlength="4" required/></td>
 											<td><input type="text" class="form-control" name="units" value="<?php echo htmlentities($units); ?>" placeholder="Units" maxlength="2" required/></td>
 										</tr>								
 									</table>
@@ -160,58 +174,76 @@
 								</div>
 							</div>
 						</div>
-						<div class="plotter-admin-bg">
-							<h3> Subject Lists</h3>
-							<?php if(count($plotter) > 0): ?>
-								<div class="table-responsive table subject-table">
-									<table class="table table-striped table-condensed table-hover">
-										<thead>
-											<tr>
-												<th width="150">EDP Code</th>
-												<th>Subject</th>
-												<th>Start Time</th>
-												<th>End Time</th>
-												<th>Days</th>
-												<th>Room</th>
-												<th>Units</th>
-												<th width="50"> </th>
-												<th width="50"> </th>
-											</tr>
-										</thead>
-										<tbody>
-										<?php foreach($plotter as $n): ?>
-											<tr>
-												<td><?php echo htmlentities($n['edpcode']); ?></td>
-												<td><?php echo htmlentities($n['subject']); ?></td>
-												<td><?php echo htmlentities ($n['stime']);  ?></td>
-												<td><?php echo htmlentities($n['etime']); ?></td>
-												<td><?php echo htmlentities($n['days']); ?></td>
-												<td><?php echo htmlentities($n['room']); ?></td>
-												<td><?php echo htmlentities($n['units']); ?></td>
-												<td>
-													<a href="admin-edit.php?id=<?php echo htmlentities($n['subjNo']); ?>">
-														<i class="glyphicon glyphicon-pencil"> </i>
-													</a>
-												</td>
-												<td>
-													<a href="subject-delete.php?id=<?php echo htmlentities($n['subjNo']); ?>"  onclick="return confirm('Are you sure?');">
-														<i class="glyphicon glyphicon-trash"> </i>
-													</a>
-												</td>
-											</tr>
-										<?php endforeach; ?>
-										</tbody>
-									</table>
-								</div>					
-							<?php else: ?>
-								<div class="alert alert-danger" role="alert">
-									<?php echo "No entries recorded yet!"; ?>
-								</div>
-							<?php endif; ?>
-						</div>								
-					</form>	
-				</div>			
-			</div>
+					</form>
+				</div>
+			</div>			
+				<div class="search-admin-bg">
+					<h3> Subject Lists</h3>
+					<div class="row">
+						<div class="col-xs-offset-8">
+							<div class="pull-right">
+								<form method="get" class="form-inline">
+									<div class="input-group">
+									<input type="text" name="search" value="<?php echo htmlentities($search); ?>" class="form-control input-small" placeholder="Search subjects here . . ">
+									<span class="input-group-btn">
+										<button class="btn btn-default btn-large" type="submit"> Go</button>
+									</span>					  
+									</div>			
+								</form>
+							</div>
+						</div>
+					</div>
+					<?php if(count($plotter) > 0): ?>
+						<div class="table-responsive table subject-table">
+							<table class="table table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th width="150">EDP Code</th>
+										<th>Subject</th>
+										<th>Start Time</th>
+										<th>End Time</th>
+										<th>Days</th>
+										<th>Room</th>
+										<th>Units</th>
+										<th width="50"> </th>
+										<th width="50"> </th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach($plotter as $n): ?>
+									<tr>
+										<td><?php echo htmlentities($n['edpcode']); ?></td>
+										<td><?php echo htmlentities($n['subject']); ?></td>
+										<td><?php echo htmlentities($n['stime']); ?></td>
+										<td><?php echo htmlentities($n['etime']); ?></td>
+										<td><?php echo htmlentities($n['days']); ?></td>
+										<td><?php echo htmlentities($n['room']); ?></td>
+										<td><?php echo htmlentities($n['units']); ?></td>
+										<td>
+											<a href="subject-edit.php?id=<?php echo htmlentities($n['subjNo']); ?>">
+												<i class="glyphicon glyphicon-pencil"> </i>
+											</a>
+										</td>
+										<td>
+											<a href="subject-delete.php?id=<?php echo htmlentities($n['subjNo']); ?>"  onclick="return confirm('Are you sure?');">
+												<i class="glyphicon glyphicon-trash"> </i>
+											</a>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+								</tbody>					
+							</table>
+							<div class="text-info">
+								<b><?php echo count($plotter); ?></b> matching record(s) found.
+								<?php else: ?>
+									<div class="alert alert-danger" role="alert">
+										<?php echo "No entries record found!"; ?>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>			
+				</div>
+			</div>		
 		</div>
 	</header>
    

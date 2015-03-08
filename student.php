@@ -119,7 +119,7 @@
 </head>
 <!-- Header -->
 <body id="page-top" class="index">
-	<?php include('header.php'); ?>
+	<?php include('header-student.php'); ?>
 	
     <!-- Header -->
     <header>
@@ -139,8 +139,8 @@
 									<?php echo htmlentities($student['mname']) ; ?>
 								</div>
 								<div class="col-xs-2">
-									<?php echo htmlentities($student['course']); ?>
-									<?php echo htmlentities($student['year']); ?>
+									<?php echo htmlentities($student['course']) . ($student['year']); ?>
+									
 								</div>
 							</div>
 						</div>									
@@ -196,8 +196,8 @@
 						<div>							
 							<form method="post" class="form">
 								<center>
-									<input type="submit" name="add" value="Submit" class="btn btn-default btn-lg">
-									<input type="reset" name="submit" value="Cancel" class="btn btn-default btn-lg">
+									<input type="submit" name="add" value="Submit" class="btn btn-primary btn-lg">&nbsp&nbsp
+									<input type="reset" name="submit" value="Cancel" class="btn btn-warning btn-lg">
 								</center>
 							</form>
 						</div>	
