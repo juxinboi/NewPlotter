@@ -87,7 +87,7 @@
 						<div class="pull-right">
 							<form method="get" class="form-inline">
 								<div class="input-group">
-									<input type="text" name="search" value="<?php echo htmlentities($search); ?>" class="form-control input-small" placeholder="Search subjects here . . ">
+								<input type="text" name="search" value="<?php echo htmlentities($search); ?>" class="form-control input-small" placeholder="Search subjects here . . ">
 								  <span class="input-group-btn">
 									<button class="btn btn-default btn-large" type="submit"> Go</button>
 								  </span>					  
@@ -147,7 +147,6 @@
 					</div>			
 			</div>
 		</div>
-	</div>
     </header>
 
     
