@@ -23,7 +23,7 @@
                         <a href="student.php"><i class="glyphicon glyphicon-plus"> </i> New Plotter</a>
                     </li>
                     <li class="page-scroll">
-                        <a href=""><i class="glyphicon glyphicon-th-list"> </i> View Plotters</a>
+                        <a href="student-view.php"><i class="glyphicon glyphicon-th-list"> </i> View Plotters</a>
                     </li>
 					<li class="page-scroll">
                         <a href="logout.php"><i class="glyphicon glyphicon-off"> </i> Logout</a>
