@@ -135,7 +135,7 @@
 	function list_student_plotter ()
 	{
 		$db = db_plotter();
-		$sql = "select * from plotter order by status, plotterid ";
+		$sql = "select * from plotter";
 		$st = $db->prepare($sql);
 		$st -> execute();
 		$row = $st->fetchAll();
@@ -144,8 +144,7 @@
 		
 		return $row;
 	}
-	
-/*----------pltted_subject table-------------*/		
+/*----------pltted_subject table-------------*/
 
 	function add_student_plotted_subject ($plotterid,$edpcode)
 	{
@@ -180,7 +179,7 @@
 		$db = null;
 		
 		return $row;
-	}	
+	}
 	
 	function delete_student_plotted_subject($edpcode)
 	{
@@ -188,49 +187,6 @@
 		$sql = "delete from plotted_subject where edpcode = ?";
 		$st = $db->prepare($sql);
 		$st->execute(array($edpcode));
-		$db = null;
-	}
-	
-	function update_student_plotted_subject($status,$plotterid)
-	{
-		$db = db_plotter();
-		$sql = "update plotter set status=? where plotterid = ?";
-		$st = $db->prepare($sql);
-		$st -> execute(array($status,$plotterid));
-		$db = null;
-	}
-	
-	
-	function pending_student_plotter_subject($status)
-	{
-		$db = db_plotter();
-		$sql = "select * from plotter where status = ?";
-		$st = $db->prepare($sql);
-		$st ->execute(array($status));
-		$row = $st->fetchAll();
-		$db = null;
-		
-		return $row;
-	}
-	
-	function approved_student_plotter_subject($status)
-	{
-		$db = db_plotter();
-		$sql = "select * from plotter where status = ?";
-		$st = $db->prepare($sql);
-		$st ->execute(array($status));
-		$row = $st->fetchAll();
-		$db = null;
-		
-		return $row;
-	}
-
-	function delete_student_plotter_subject($status,$plotterid)
-	{
-		$db = db_plotter();
-		$sql = "update plotter set status=? where plotterid = ?";
-		$st = $db->prepare($sql);
-		$st ->execute(array($status, $plotterid));
 		$db = null;
 	}
 ?>

@@ -60,13 +60,13 @@
 
 <!-- Header -->
 <body id="page-top" class="index">
-	<?php include('header.php'); ?>
+	<?php include('header-student.php'); ?>
 	
     <!-- Header -->
     <header>
         <div class="container">
 			   <div class="plotter-admin-bg">
-				<h3> Pending Plotter</h3>
+				<h3> My Pending Plotters</h3>
 				<?php if(count($plotter_pending) > 0): ?>
 					<div class="table-responsive table subject-table">
 						<table class="table table-striped table-condensed table-hover">

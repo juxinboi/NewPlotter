@@ -30,7 +30,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Landing Page - Start Bootstrap Theme</title>
+	<title>OSP</title>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

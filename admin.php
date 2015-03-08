@@ -97,7 +97,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Online Subject Plotter </title>
+    <title>OSP</title>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -225,7 +226,7 @@
 											</a>
 										</td>
 										<td>
-											<a href="subject-delete.php?id=<?php echo htmlentities($n['subjNo']); ?>"  onclick="return confirm('Are you sure?');">
+											<a href="subject-delete.php?id=<?php echo htmlentities($n['s']); ?>"  onclick="return confirm('Are you sure?');">
 												<i class="glyphicon glyphicon-trash"> </i>
 											</a>
 										</td>

@@ -44,6 +44,7 @@
     <meta name="author" content="">
 
     <title>OSP</title>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

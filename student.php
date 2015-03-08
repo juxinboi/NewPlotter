@@ -17,6 +17,7 @@
 	$ctr = '';
 	$plotted_subject = '';
 	$duplicate = '';
+	$search = '';
 		
 	if(!isset($_SESSION['islogin']))
 	{
@@ -81,7 +82,20 @@
 			
 			++$ctr;		
 		}
+		if(isset($_GET['search']))
+		{
+			$search = trim($_GET['search']);
+		}
 		
+		if($search == '')
+		{
+			$plotter = list_subject();
+		}
+		else 
+		{
+			$plotter = search_subject($search);
+		}
+	
 		if(isset($_GET['id']))
 		{
 			$id = trim($_GET['id']);	
@@ -89,7 +103,7 @@
 			$error = 0;
 			$message = 'Subject sucessfully deleted'; 
 		}
-				
+		
 		$plotted_subject = show_student_plotted_subject($ctr);		
 	}
 ?>
@@ -104,7 +118,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Landing Page - Start Bootstrap Theme</title>
+	<title>OSP</title>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -214,6 +229,20 @@
 					<div class="plotter-admin-bg">
 						<div class="table-responsive table subject-table">							
 							<h2> Subject Lists </h2>
+								<div class="row">
+									<div class="col-xs-offset-7">
+										<div class="pull-right">
+											<form method="get" class="form-inline">
+												<div class="input-group">
+												<input type="text" name="search" value="<?php echo htmlentities($search); ?>" class="form-control input-small" placeholder="Search subjects ">
+												<span class="input-group-btn">
+													<button class="btn btn-default btn-large" type="submit"> Go</button>
+												</span>					  
+												</div>			
+											</form>
+										</div>
+									</div>
+								</div>
 							<table class="table table-striped table-condensed table-hover">
 								<thead>
 									<tr>
@@ -227,7 +256,7 @@
 										<th width="40"> </th>
 									</tr>
 								</thead>
-								<tbody>							
+								<tbody>			
 								<?php foreach($plotter as $n): ?>
 									<tr>
 										<td><?php echo htmlentities($n['edpcode']); ?></td>
@@ -245,7 +274,7 @@
 									</tr>
 								<?php endforeach; ?>
 								</tbody>
-							</table>
+							</table>							
 						</div>	
 					</div>
 					<?php else: ?>
@@ -253,7 +282,9 @@
 							<?php echo "No entries recorded yet!"; ?>
 						</div>
 					<?php endif; ?>
+
 				</div>	
+				
 			</div>
 		</div>
     </header>
