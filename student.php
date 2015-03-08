@@ -89,7 +89,7 @@
 			$error = 0;
 			$message = 'Subject sucessfully deleted'; 
 		}
-		
+				
 		$plotted_subject = show_student_plotted_subject($ctr);		
 	}
 ?>
